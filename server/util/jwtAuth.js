@@ -4,7 +4,6 @@ const JWT_SECRET = "CantbeHyacked";
 
 exports.createToken = (userId) => {
     try {
-        console.log(userId);
         const SignUpJWT = jwt.sign(userId, JWT_SECRET);
 
         return SignUpJWT;

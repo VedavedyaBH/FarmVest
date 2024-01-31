@@ -1,4 +1,4 @@
 module.exports = [
     require("./user"),
-    // require("./admin")
+    require("./admin")
 ];

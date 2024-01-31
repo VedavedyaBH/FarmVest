@@ -1,4 +1,3 @@
-const zod = require("zod");
 const { createToken } = require("../util/jwtAuth");
 const { zusername, zpassword, zemail } = require("../util/zodValidation");
 const userServices = require("../services/userServices");
@@ -9,25 +8,20 @@ exports.userSignup = async (req, res) => {
         const validateUsername = zusername.parse(username);
         const validatePassword = zpassword.parse(password);
         const validateEmail = zemail.parse(email);
-        console.log({ username, password, email });
 
         if (
             validateUsername.error ||
             validatePassword.error ||
             validateEmail.error
         ) {
-            console.log("Hi");
-            return res.status(400).json("Missmatcgh");
+            return res.status(400).json({ error: error.message });
         }
-        console.log("kkjansdkjakjdnk");
 
         const user = await userServices.createUser({
             username,
             password,
             email,
         });
-
-        console.log(user.userId);
 
         if (user) {
             const token = createToken(user.userId);
@@ -36,8 +30,39 @@ exports.userSignup = async (req, res) => {
                 .json({ token: token, message: "User created succesfully!" });
         }
     } catch (error) {
-        console.log("Hioiiiiiiiiiii");
         return res.status(400).send({
+            error: error.message,
+        });
+    }
+};
+
+exports.userLogin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const validateEmail = zemail.parse(email);
+        const validatePassword = zpassword.parse(password);
+
+        if (validatePassword.error || validateEmail.error) {
+            return res.status(400).json({ error: error.message });
+        }
+
+        const user = await userServices.loginUser({
+            password,
+            email,
+        });
+
+        if (!user) {
+            res.status(403).json({
+                message: "Could not login",
+            });
+        }
+        const token = createToken(user.userId);
+        res.status(200).json({
+            token,
+        });
+    } catch (error) {
+        res.status(400).json({
             error: error.message,
         });
     }
