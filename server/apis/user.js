@@ -4,6 +4,6 @@ const use = require("../util/util").use;
 const userController = require("../controllers/userController");
 
 user.post("/signup", use(userController.userSignup));
-// user.post("/login", use(userController.userSignup));
+user.post("/login", use(userController.userLogin));
 
 module.exports = user;
