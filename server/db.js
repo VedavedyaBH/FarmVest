@@ -12,7 +12,7 @@ const UsersSchema = new db.Schema({
     profilePicture: String,
     purchasedItems: [
         {
-            type: db.Schema.Types.ObjectId,
+            type: String,
             ref: "farms",
         },
     ],
