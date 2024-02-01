@@ -4,7 +4,6 @@ const farmServices = require("../services/farmServices");
 exports.getAllFarms = async (req, res) => {
     try {
         const farms = await farmServices.getAllFarms();
-        console.log(farms);
         if (farms[0] == null) {
             res.status(200).json({
                 message: "No farms",
@@ -13,6 +12,51 @@ exports.getAllFarms = async (req, res) => {
 
         res.status(200).json({
             farms,
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+};
+
+exports.getFarmById = async (req, res) => {
+    try {
+        const itemId = req.params.id;
+        const farms = await farmServices.getFarmById(itemId);
+
+        if (farms == null) {
+            res.status(200).json({
+                message: "No farms",
+            });
+        }
+
+        res.status(200).json({
+            farms,
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+};
+
+exports.deleteFarmById = async (req, res) => {
+    try {
+        console.log("guiibiubkb");
+
+        const itemId = req.params.id;
+        console.log(itemId);
+        const farms = await farmServices.deleteFarmById(itemId);
+
+        if (farms == null) {
+            res.status(200).json({
+                message: "No farms",
+            });
+        }
+
+        res.status(200).json({
+            Message: "deleted",
         });
     } catch (error) {
         res.status(400).json({

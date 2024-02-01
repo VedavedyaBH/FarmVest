@@ -1,6 +1,7 @@
 const { Users } = require("../db");
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
+const farmServices = require("../services/farmServices");
 
 exports.createUser = async ({ username, password, email }) => {
     try {
@@ -53,19 +54,15 @@ exports.loginUser = async ({ email, password }) => {
 
 exports.getUserByEmail = async ({ email }) => {
     try {
-        console.log(email);
-
         const user = await Users.findOne({
             email: email,
         });
 
         if (!user) {
-            console.log(user);
             return null;
         }
 
         if (user) {
-            console.log(user);
             return user;
         }
     } catch (error) {
@@ -75,22 +72,71 @@ exports.getUserByEmail = async ({ email }) => {
 
 exports.getUserByUsername = async ({ username }) => {
     try {
-        console.log(username);
-
         const user = await Users.findOne({
             username: username,
         });
 
         if (!user) {
-            console.log(user);
             return null;
         }
 
         if (user) {
-            console.log(user);
             return user;
         }
     } catch (error) {
         throw new Error("Could not find");
+    }
+};
+
+exports.getAllOrders = async (userid) => {
+    try {
+        const orders = await Users.findOne({
+            userId: userid,
+        }).select("purchasedItems");
+
+        return orders ? orders.purchasedItems : [];
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+exports.placecOrder = async ({ userId, itemid }) => {
+    try {
+        const validOrder = await farmServices.getFarmById(itemid);
+
+        if (!validOrder) {
+            throw new ReferenceError();
+        }
+
+        const orders = Users.updateOne(
+            { userId: userId },
+            {
+                $push: {
+                    purchasedItems: itemid,
+                },
+            }
+        );
+        return orders;
+    } catch (error) {
+        if (!ReferenceError) {
+            throw new Error(error.message);
+        }
+        throw new Error("Cannot place order of non-existing item ");
+    }
+};
+
+exports.removeOrder = async ({ userId, itemid }) => {
+    try {
+        console.log({ userId, itemid });
+        const orders = Users.updateOne(
+            { userId: userId },
+            {
+                $pull: { purchasedItems: itemid },
+            }
+        );
+
+        return orders;
+    } catch (error) {
+        throw new Error(error.message);
     }
 };
