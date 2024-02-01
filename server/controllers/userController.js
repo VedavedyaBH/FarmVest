@@ -67,3 +67,62 @@ exports.userLogin = async (req, res) => {
         });
     }
 };
+
+exports.getAllOrders = async (req, res) => {
+    try {
+        const userId = req.headers.userid;
+        if (!userId) {
+            res.status(404).json({
+                Message: "Please login",
+            });
+        }
+        const orders = await userServices.getAllOrders(userId);
+
+        res.status(200).json({
+            orders,
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+};
+
+exports.placeOrder = async (req, res) => {
+    try {
+        const userId = req.headers.userid;
+        const { itemid } = req.body;
+
+        if (!userId || !{ itemid }) {
+            res.status(404).json({
+                Message: "Please login",
+            });
+        }
+        await userServices.placecOrder({ userId, itemid });
+
+        res.status(200).json({
+            Message: "Succesful",
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+};
+
+exports.removeOrder = async (req, res) => {
+    try {
+        const userId = req.headers.userid;
+        const { itemid } = req.body;
+        console.log({ itemid });
+        await userServices.removeOrder({ userId, itemid });
+
+        res.status(200).json({
+            Message: "Removed",
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+};

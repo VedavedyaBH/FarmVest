@@ -1,4 +1,4 @@
-const { Farms } = require("../db");
+const { Farms, Users } = require("../db");
 const uuid = require("uuid");
 
 exports.getAllFarms = async () => {
@@ -7,6 +7,27 @@ exports.getAllFarms = async () => {
         return farms;
     } catch (error) {
         throw new Error("Could not retrive");
+    }
+};
+
+exports.getFarmById = async (itemId) => {
+    try {
+        const farms = await Farms.findOne({ itemId: itemId });
+        return farms;
+    } catch (error) {
+        throw new Error("Could not retrive");
+    }
+};
+
+exports.deleteFarmById = async (itemId) => {
+    try {
+        await Users.updateMany(
+            { purchasedItems: itemId },
+            { $pull: { purchasedItems: itemId } }
+        );
+        return await Farms.deleteOne({ itemId: itemId });
+    } catch (error) {
+        throw new Error("Could not delete");
     }
 };
 
