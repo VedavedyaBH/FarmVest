@@ -34,12 +34,24 @@ const FarmsSchema = new db.Schema({
     itemImage: String,
 });
 
+const WalletSchema = new db.Schema({
+    walletId: String,
+    userId: {
+        type: String,
+        ref: "users",
+        required: true,
+    },
+    balance: Number,
+});
+
 const Users = db.model("users", UsersSchema);
 const Admins = db.model("admins", AdminsSchema);
 const Farms = db.model("farms", FarmsSchema);
+const Wallet = db.model("wallet", WalletSchema);
 
 module.exports = {
     Users,
     Admins,
     Farms,
+    Wallet,
 };
