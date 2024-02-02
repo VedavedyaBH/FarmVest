@@ -1,7 +1,10 @@
-const { Users } = require("../db");
+const { Users, Wallet } = require("../db");
+const mongoose = require("mongoose");
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 const farmServices = require("../services/farmServices");
+const walletServices = require("../services/walletServices");
+
 
 exports.createUser = async ({ username, password, email }) => {
     try {
@@ -23,6 +26,14 @@ exports.createUser = async ({ username, password, email }) => {
             password: hashedPassword,
             email,
         });
+        console.log(user.userId);
+
+        await Wallet.create({
+            walletId: uuid.v4(),
+            userId: user.userId,
+            balance: 0,
+        });
+
         return user;
     } catch (error) {
         if (!ReferenceError) {
@@ -104,9 +115,19 @@ exports.placecOrder = async ({ userId, itemid }) => {
     try {
         const validOrder = await farmServices.getFarmById(itemid);
 
+        const session = await mongoose.startSession();
+        session.startTransaction();
+
         if (!validOrder) {
-            throw new ReferenceError();
+            throw new ReferenceError(
+                "Cannot place order of non-existing item "
+            );
         }
+        const balance = await walletServices.getBalance({ userId });
+
+        if (validOrder.price > balance) {
+            throw new ReferenceError("Insufficient funds");
+
 
         const orders = Users.updateOne(
             { userId: userId },
@@ -116,18 +137,30 @@ exports.placecOrder = async ({ userId, itemid }) => {
                 },
             }
         );
+
+        const amount = validOrder.price;
+        await walletServices.withdrawAmount({ userId, amount });
+        session.commitTransaction();
         return orders;
     } catch (error) {
         if (!ReferenceError) {
             throw new Error(error.message);
         }
-        throw new Error("Cannot place order of non-existing item ");
+
+        throw new Error(error.message);
+
+
     }
 };
 
 exports.removeOrder = async ({ userId, itemid }) => {
     try {
-        console.log({ userId, itemid });
+
+        const session = await mongoose.startSession();
+        session.startTransaction();
+
+        const item = await farmServices.getFarmById(itemid);
+
         const orders = Users.updateOne(
             { userId: userId },
             {
@@ -135,6 +168,10 @@ exports.removeOrder = async ({ userId, itemid }) => {
             }
         );
 
+        const amount = item.price;
+        await walletServices.addBalance({ userId, amount });
+
+        session.commitTransaction();
         return orders;
     } catch (error) {
         throw new Error(error.message);
