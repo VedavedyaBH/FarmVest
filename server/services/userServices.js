@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const farmServices = require("../services/farmServices");
 const walletServices = require("../services/walletServices");
 
+
 exports.createUser = async ({ username, password, email }) => {
     try {
         const existingUser = await this.getUserByUsername({ username });
@@ -113,6 +114,7 @@ exports.getAllOrders = async (userid) => {
 exports.placecOrder = async ({ userId, itemid }) => {
     try {
         const validOrder = await farmServices.getFarmById(itemid);
+
         const session = await mongoose.startSession();
         session.startTransaction();
 
@@ -125,7 +127,7 @@ exports.placecOrder = async ({ userId, itemid }) => {
 
         if (validOrder.price > balance) {
             throw new ReferenceError("Insufficient funds");
-        }
+
 
         const orders = Users.updateOne(
             { userId: userId },
@@ -135,6 +137,7 @@ exports.placecOrder = async ({ userId, itemid }) => {
                 },
             }
         );
+
         const amount = validOrder.price;
         await walletServices.withdrawAmount({ userId, amount });
         session.commitTransaction();
@@ -143,12 +146,16 @@ exports.placecOrder = async ({ userId, itemid }) => {
         if (!ReferenceError) {
             throw new Error(error.message);
         }
+
         throw new Error(error.message);
+
+
     }
 };
 
 exports.removeOrder = async ({ userId, itemid }) => {
     try {
+
         const session = await mongoose.startSession();
         session.startTransaction();
 
@@ -160,6 +167,7 @@ exports.removeOrder = async ({ userId, itemid }) => {
                 $pull: { purchasedItems: itemid },
             }
         );
+
         const amount = item.price;
         await walletServices.addBalance({ userId, amount });
 
