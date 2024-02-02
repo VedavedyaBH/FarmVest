@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const farmServices = require("../services/farmServices");
 const walletServices = require("../services/walletServices");
 
-
 exports.createUser = async ({ username, password, email }) => {
     try {
         const existingUser = await this.getUserByUsername({ username });
@@ -127,8 +126,7 @@ exports.placecOrder = async ({ userId, itemid }) => {
 
         if (validOrder.price > balance) {
             throw new ReferenceError("Insufficient funds");
-
-
+        }
         const orders = Users.updateOne(
             { userId: userId },
             {
@@ -148,14 +146,11 @@ exports.placecOrder = async ({ userId, itemid }) => {
         }
 
         throw new Error(error.message);
-
-
     }
 };
 
 exports.removeOrder = async ({ userId, itemid }) => {
     try {
-
         const session = await mongoose.startSession();
         session.startTransaction();
 
