@@ -12,7 +12,7 @@ exports.getBalance = async (req, res) => {
 
         const balance = await walletServices.getBalance({ userId });
         res.status(200).json({
-            Message: `Balance is Rs.${balance}`,
+            balance,
         });
     } catch (error) {
         res.status(400).json({
@@ -32,9 +32,10 @@ exports.addBalance = async (req, res) => {
             });
         }
 
-        await walletServices.addBalance({ userId, amount });
+        const bal = await walletServices.addBalance({ userId, amount });
+
         res.status(200).json({
-            Message: `Added Rs.${amount}`,
+            bal,
         });
     } catch (error) {
         res.status(400).json({
@@ -54,9 +55,15 @@ exports.withdrawAmount = async (req, res) => {
             });
         }
 
-        await walletServices.withdrawAmount({ userId, amount });
+        const bal = await walletServices.withdrawAmount({ userId, amount });
+        console.log(bal);
+        if (!bal) {
+            res.status(403).json({
+                Message: "Insufficient funds",
+            });
+        }
         res.status(200).json({
-            Message: `Withdrawn Rs.${amount}`,
+            bal,
         });
     } catch (error) {
         res.status(400).json({

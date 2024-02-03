@@ -15,6 +15,8 @@ exports.createToken = (userId) => {
 exports.verifyJWT = (req, res, next) => {
     try {
         const token = req.headers.authorization;
+        console.log(token);
+
         if (!token) {
             throw new Error("Please login");
         }
@@ -23,6 +25,8 @@ exports.verifyJWT = (req, res, next) => {
         const decodedToken = jwt.verify(jwtToken, JWT_SECRET);
 
         if (decodedToken) {
+            console.log("verified");
+
             next();
         } else {
             res.status(403).json({
