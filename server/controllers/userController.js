@@ -39,7 +39,6 @@ exports.userSignup = async (req, res) => {
 exports.userLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
-
         const validateEmail = zemail.parse(email);
         const validatePassword = zpassword.parse(password);
 
@@ -58,8 +57,32 @@ exports.userLogin = async (req, res) => {
             });
         }
         const token = createToken(user.userId);
+
         res.status(200).json({
             token,
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+};
+
+exports.getUserByEmail = async (req, res) => {
+    try {
+        console.log("triggered");
+        const email = req.headers.email;
+        console.log(email);
+
+        if (!email) {
+            res.status(404).json({
+                Message: "Please login",
+            });
+        }
+        const user = await userServices.getUserByEmail({ email });
+        console.log(user);
+        res.status(200).json({
+            user,
         });
     } catch (error) {
         res.status(400).json({

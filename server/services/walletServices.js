@@ -7,6 +7,7 @@ exports.getBalance = async ({ userId }) => {
         const wallet = await Wallet.findOne({
             userId: userId,
         });
+
         return wallet.balance;
     } catch (error) {
         if (!ReferenceError) {
@@ -30,22 +31,28 @@ exports.addBalance = async ({ userId, amount }) => {
         );
 
         await session.commitTransaction();
-        return wallet.balance;
+        const newBal = await this.getBalance({ userId });
+        return newBal;
     } catch (error) {
         if (!ReferenceError) {
             throw new Error(error.message);
         }
+        throw new Error(error.message);
     }
 };
 
 exports.withdrawAmount = async ({ userId, amount }) => {
+    const session = await mongoose.startSession();
     try {
         console.log({ userId, amount });
 
-        const session = await mongoose.startSession();
-        session.startTransaction();
+        const isBalanceZero = await this.getBalance({ userId });
 
-        const wallet = await Wallet.findOneAndUpdate(
+        if (isBalanceZero <= amount) {
+            throw new ReferenceError("Insufficient balance");
+        }
+        session.startTransaction();
+        await Wallet.findOneAndUpdate(
             { userId: userId },
             {
                 $inc: {
@@ -53,9 +60,10 @@ exports.withdrawAmount = async ({ userId, amount }) => {
                 },
             }
         );
+        const balance = await this.getBalance({ userId });
 
         await session.commitTransaction();
-        return wallet.balance;
+        return balance;
     } catch (error) {
         if (!ReferenceError) {
             throw new Error(error.message);
