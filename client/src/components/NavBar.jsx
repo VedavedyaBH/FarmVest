@@ -17,7 +17,6 @@ export const NavBar = () => {
         <>
           <div className="bg-slate-100 border-2 shadow h-16 flex justify-between">
             <div className="flex justify-center text-gray-600 h-full ml-14">
-              {/* <img className="h-12 w-12 mt-1" src={img}></img> */}
               <button
                 className=" pl-3 text-teal-9 font-bold"
                 onClick={() => {
@@ -31,13 +30,26 @@ export const NavBar = () => {
               <button className="flex flex-col justify-center text-gray-600 h-full mr-12">
                 SignUp
               </button>
+              <button
+                onClick={() => {
+                  navigate("/login");
+                }}
+                className="flex flex-col justify-center text-gray-600 h-full mr-12"
+              >
+                Login
+              </button>
               <button className="flex flex-col justify-center text-gray-600 h-full mr-12">
                 Pricing
               </button>
               <button className="flex flex-col justify-center text-gray-600 h-full mr-12">
                 About
               </button>
-              <button className="flex flex-col justify-center text-gray-600    h-full mr-12">
+              <button
+                className="flex flex-col justify-center text-gray-600  h-full mr-12"
+                onClick={() => {
+                  navigate("/farms");
+                }}
+              >
                 Products
               </button>
             </div>
@@ -59,6 +71,14 @@ export const NavBar = () => {
             </div>
             <div className="flex">
               <button
+                className="flex flex-col justify-center text-gray-600  h-full mr-12"
+                onClick={() => {
+                  navigate("/farms");
+                }}
+              >
+                Products
+              </button>
+              <button
                 className="flex flex-col justify-center text-gray-600 h-full mr-12"
                 onClick={() => {
                   navigate("/wallet");
@@ -66,7 +86,12 @@ export const NavBar = () => {
               >
                 Wallet
               </button>
-              <button className="flex flex-col justify-center text-gray-600 h-full mr-12">
+              <button
+                className="flex flex-col justify-center text-gray-600 h-full mr-12"
+                onClick={() => {
+                  navigate("/orders");
+                }}
+              >
                 Profile
               </button>
               <button

@@ -54,4 +54,5 @@ module.exports = {
     Admins,
     Farms,
     Wallet,
+    db,
 };

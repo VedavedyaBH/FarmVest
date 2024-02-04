@@ -72,7 +72,6 @@ exports.getUserByEmail = async (req, res) => {
     try {
         console.log("triggered");
         const email = req.headers.email;
-        console.log(email);
 
         if (!email) {
             res.status(404).json({
@@ -115,6 +114,7 @@ exports.placeOrder = async (req, res) => {
     try {
         const userId = req.headers.userid;
         const { itemid } = req.body;
+        console.log({ itemid });
 
         if (!userId || !{ itemid }) {
             res.status(404).json({
@@ -136,8 +136,8 @@ exports.placeOrder = async (req, res) => {
 exports.removeOrder = async (req, res) => {
     try {
         const userId = req.headers.userid;
-        const { itemid } = req.body;
-        console.log({ itemid });
+        const itemid = req.params.id;
+        
         await userServices.removeOrder({ userId, itemid });
 
         res.status(200).json({
