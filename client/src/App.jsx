@@ -5,6 +5,8 @@ import { NavBar } from "./components/NavBar";
 import { Home } from "./pages/Home";
 import { LogIn } from "./pages/LogIn";
 import { Wallet } from "./pages/Wallet";
+import { Farms } from "./pages/Farms";
+import { Orders } from "./pages/Orders";
 
 function App() {
   return (
@@ -35,6 +37,22 @@ function App() {
             element={
               <AuthProvider>
                 <Wallet />
+              </AuthProvider>
+            }
+          />
+          <Route
+            path="/farms"
+            element={
+              <AuthProvider>
+                <Farms />
+              </AuthProvider>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <AuthProvider>
+                <Orders />
               </AuthProvider>
             }
           />

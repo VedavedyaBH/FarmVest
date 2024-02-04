@@ -37,7 +37,7 @@ export function Home() {
                   <Button
                     label={"Invest"}
                     onClick={() => {
-                      navigate("/");
+                      navigate("/farms");
                     }}
                   />
                 </>

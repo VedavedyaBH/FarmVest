@@ -104,7 +104,13 @@ exports.getAllOrders = async (userid) => {
             userId: userid,
         }).select("purchasedItems");
 
-        return orders ? orders.purchasedItems : [];
+        const _orders = await Promise.all(
+            orders.purchasedItems.map(async (order) => {
+                return await farmServices.getFarmById(order);
+            })
+        );
+        Promise.resolve(_orders);
+        return _orders;
     } catch (error) {
         throw new Error(error.message);
     }
@@ -155,13 +161,35 @@ exports.removeOrder = async ({ userId, itemid }) => {
         session.startTransaction();
 
         const item = await farmServices.getFarmById(itemid);
+        const userOrders = await this.getAllOrders(userId);
 
-        const orders = Users.updateOne(
+        let orderCount = 0;
+        userOrders.forEach((order) => {
+            if (order.itemId == itemid) {
+                orderCount++;
+            }
+        });
+
+        const orders = await Users.updateOne(
             { userId: userId },
             {
                 $pull: { purchasedItems: itemid },
             }
         );
+
+        if (orderCount > 1) {
+            for (let i = 1; i < orderCount; i++) {
+                await Users.updateOne(
+                    { userId: userId },
+                    {
+                        $push: {
+                            purchasedItems: itemid,
+                        },
+                    }
+                );
+            }
+        }
+        console.log({ userId, itemid });
 
         const amount = item.price;
         await walletServices.addBalance({ userId, amount });
