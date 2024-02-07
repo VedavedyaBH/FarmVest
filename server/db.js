@@ -1,7 +1,9 @@
 const db = require("mongoose");
 
 db.connect(
-    "mongodd-url"
+
+    "mongo-url"
+
 );
 
 const UsersSchema = new db.Schema({

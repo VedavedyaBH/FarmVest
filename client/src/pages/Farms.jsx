@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { BottomWarning } from "../components/BottomWarning";
 import { useAuth } from "../context/AuthContext";
 import { FarmsDisplay } from "../components/FarmDisplay";
 import axios from "axios";
@@ -8,12 +9,14 @@ import { Button } from "../components/Button";
 export function Farms() {
   const { user, token } = useAuth();
   const [farms, setFarms] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchFarms();
-  }, []);
+  }, [user, token]);
 
   const fetchFarms = async () => {
+    console.log(user);
     try {
       const farmData = await axios({
         method: "get",
@@ -38,8 +41,9 @@ export function Farms() {
   };
 
   const buyItem = async (itemid) => {
+    console.log(user);
+
     try {
-      console.log(itemid);
       const item = await axios({
         method: "post",
         url: "http://localhost:3000/orders",
@@ -69,9 +73,20 @@ export function Farms() {
   };
   return (
     <>
-      <div className="flex p-10">
+      {!user ? (
+        <>
+          <BottomWarning
+            buttonText={"Login"}
+            label={"Create an account today or login to invest"}
+            to={"/login"}
+          ></BottomWarning>
+        </>
+      ) : (
+        ""
+      )}
+      <div className="inline-grid	grid-cols-5">
         {farms.map((farm) => (
-          <div className="p-5">
+          <div className="p-2 ">
             <FarmsDisplay
               title={farm.itemname}
               description={farm.description}
@@ -79,12 +94,19 @@ export function Farms() {
               price={`Rs.${farm.price}`}
             ></FarmsDisplay>
             <div className="pt-2">
-              <Button
-                label={"Invest"}
-                onClick={() => {
-                  buyItem(farm.itemId);
-                }}
-              ></Button>
+              {!user ? (
+                <></>
+              ) : (
+                <>
+                  {" "}
+                  <Button
+                    label={"Invest"}
+                    onClick={() => {
+                      buyItem(farm.itemId);
+                    }}
+                  ></Button>
+                </>
+              )}
             </div>
           </div>
         ))}

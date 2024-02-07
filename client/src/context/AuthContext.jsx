@@ -1,12 +1,14 @@
-import { createContext, useContext, useNavigate } from "react";
+import { createContext, useContext } from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(localStorage.getItem("userid") || {});
+  const [user, setUser] = useState(localStorage.getItem("userid") || "");
   const [token, setToken] = useState(localStorage.getItem("token") || "");
+
+  useEffect(() => {}, [user, token]);
 
   const _login = async ({ email, token }) => {
     try {
@@ -25,7 +27,6 @@ export function AuthProvider({ children }) {
 
       setUser(_user.data.user);
       setToken(token);
-      console.log(`token is set to ${token}`);
       localStorage.setItem("userid", _user.data.user.userId);
       localStorage.setItem("token", token);
     } catch (error) {
@@ -43,9 +44,8 @@ export function AuthProvider({ children }) {
   const _logout = () => {
     setUser("");
     setToken("");
-    localStorage.removeItem("user");
+    localStorage.removeItem("userid");
     localStorage.removeItem("token");
-    console.log("cleared");
   };
 
   const contextValue = {

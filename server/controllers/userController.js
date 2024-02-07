@@ -93,12 +93,14 @@ exports.getUserByEmail = async (req, res) => {
 exports.getAllOrders = async (req, res) => {
     try {
         const userId = req.headers.userid;
+        console.log(userId);
         if (!userId) {
             res.status(404).json({
                 Message: "Please login",
             });
         }
         const orders = await userServices.getAllOrders(userId);
+        console.log(orders);
 
         res.status(200).json({
             orders,
@@ -137,7 +139,7 @@ exports.removeOrder = async (req, res) => {
     try {
         const userId = req.headers.userid;
         const itemid = req.params.id;
-        
+
         await userServices.removeOrder({ userId, itemid });
 
         res.status(200).json({
