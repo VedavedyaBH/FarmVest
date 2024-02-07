@@ -70,8 +70,10 @@ exports.deleteFarmById = async (req, res) => {
 
 exports.addFarms = async (req, res) => {
     try {
+        console.log("hiuuuuu");
         const fileBuffer = req.file.buffer;
         const { itemname, description, price } = req.body;
+        console.log(req.body);
         const newFarm = await farmServices.addFarms({
             itemname,
             description,

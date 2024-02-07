@@ -14,10 +14,10 @@ export function Home() {
   const navigate = useNavigate();
   return (
     <>
-      <div className="bg-slate-50 ">
+      <div className="bg-white ">
         <div className="flex pt-2">
           <div className="pt-14">
-            <img class="h-auto max-w-xl shadow border-2" src={img2}></img>
+            <img class="h-auto max-w-xl border-2" src={img2}></img>
           </div>
           <div className="h-screen text-center pt-40  pl-28 pr-28">
             <div className="text-center pt-14 text-4xl text-gray-500 font-extralight md:text-5xl lg:text-5xl ">

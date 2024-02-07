@@ -13,9 +13,18 @@ export function Orders() {
     fetchOrders();
   }, []);
 
+  useEffect(() => {}, [orders]);
+
+  const genId = (itemId) => {
+    const id = itemId * Math.random().toString();
+    return id;
+  };
+
   const fetchOrders = async () => {
     try {
       console.log("Fetching orders...");
+      console.log(user);
+
       const ordersData = await axios({
         method: "get",
         url: "http://localhost:3000/orders",
@@ -41,7 +50,6 @@ export function Orders() {
 
   const sellOrder = async (itemid) => {
     try {
-      console.log(itemid);
       const ordersData = await axios({
         method: "delete",
         url: `http://localhost:3000/orders/${itemid}`,
@@ -77,10 +85,9 @@ export function Orders() {
         </>
       ) : (
         <>
-          {" "}
-          <div className="flex p-10">
-            {orders.map((order) => (
-              <div id={`${order.itemId}}`} className="p-5" key={order.itemId}>
+          <div className="inline-grid grid-cols-5">
+            {orders?.map((order) => (
+              <div className="p-2" key={genId(order.itemId)}>
                 <FarmsDisplay
                   title={order.itemname}
                   description={order.description}

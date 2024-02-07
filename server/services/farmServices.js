@@ -33,6 +33,7 @@ exports.deleteFarmById = async (itemId) => {
 
 exports.addFarms = async ({ itemname, description, price, itemImage }) => {
     try {
+        console.log("hi");
         const farms = await Farms.create({
             itemId: uuid.v4(),
             itemname: itemname,

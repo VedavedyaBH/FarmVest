@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Heading } from "../components/Heading";
 import { InputBox } from "../components/InputBox";
 import { Button } from "../components/Button";
+import { BottomWarning } from "../components/BottomWarning";
 import { useAuth } from "../context/AuthContext";
 
 export function LogIn() {
@@ -40,7 +41,7 @@ export function LogIn() {
   return (
     <>
       <div className="bg-white flex justify-center p-5 pt-48 ">
-        <div className="p-6 border-2 shadow-sm">
+        <div className="p-6 border-2 shadow-sm w-72 h-">
           <div className="flex flex-col justify-center">
             <Heading label={"LogIn"}></Heading>
             <InputBox
@@ -59,6 +60,11 @@ export function LogIn() {
             ></InputBox>
             <div className="pt-4">
               <Button label={"Login"} onClick={login}></Button>
+              <BottomWarning
+                label={"Not an user? "}
+                buttonText={"SignUp"}
+                to={"/signup"}
+              ></BottomWarning>
             </div>
           </div>
         </div>

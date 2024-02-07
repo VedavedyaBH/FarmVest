@@ -1,21 +1,17 @@
-import img from "../assets/navbarlogo.png";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export const NavBar = () => {
   const navigate = useNavigate();
-  const { token, _logout, _login } = useAuth();
-  useEffect(() => {
-    console.log("Token has changed:", token);
-  }, [token]);
+  const { token, _logout } = useAuth();
 
   return (
     <div>
       {!token ? (
         <>
-          <div className="bg-slate-100 border-2 shadow h-16 flex justify-between">
+          <div className="bg-white border-2 shadow h-16 flex justify-between">
             <div className="flex justify-center text-gray-600 h-full ml-14">
               <button
                 className=" pl-3 text-teal-9 font-bold"
@@ -27,7 +23,12 @@ export const NavBar = () => {
               </button>
             </div>
             <div className="flex">
-              <button className="flex flex-col justify-center text-gray-600 h-full mr-12">
+              <button
+                className="flex flex-col justify-center text-gray-600 h-full mr-12"
+                onClick={() => {
+                  navigate("/signup");
+                }}
+              >
                 SignUp
               </button>
               <button
@@ -36,14 +37,14 @@ export const NavBar = () => {
                 }}
                 className="flex flex-col justify-center text-gray-600 h-full mr-12"
               >
-                Login
+                LogIn
               </button>
-              <button className="flex flex-col justify-center text-gray-600 h-full mr-12">
+              {/* <button className="flex flex-col justify-center text-gray-600 h-full mr-12">
                 Pricing
               </button>
               <button className="flex flex-col justify-center text-gray-600 h-full mr-12">
                 About
-              </button>
+              </button> */}
               <button
                 className="flex flex-col justify-center text-gray-600  h-full mr-12"
                 onClick={() => {
@@ -93,6 +94,14 @@ export const NavBar = () => {
                 }}
               >
                 Profile
+              </button>
+              <button
+                className="flex flex-col justify-center text-gray-600 h-full mr-12"
+                onClick={() => {
+                  navigate("/addfarms");
+                }}
+              >
+                Add Farm
               </button>
               <button
                 className="flex flex-col justify-center text-gray-600  h-full mr-12"
