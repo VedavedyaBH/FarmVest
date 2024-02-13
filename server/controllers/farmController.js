@@ -1,9 +1,5 @@
 const { zfarm } = require("../util/zodValidation");
 const farmServices = require("../services/farmServices");
-// const multer = require("multer");
-
-// const storage = multer.memoryStorage();
-// const upload = multer({ storage: storage }).single("itemImage");
 
 exports.getAllFarms = async (req, res) => {
     try {
@@ -70,7 +66,6 @@ exports.deleteFarmById = async (req, res) => {
 
 exports.addFarms = async (req, res) => {
     try {
-        console.log("hiuuuuu");
         const fileBuffer = req.file.buffer;
         const { itemname, description, price } = req.body;
         console.log(req.body);

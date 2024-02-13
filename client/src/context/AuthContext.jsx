@@ -1,4 +1,6 @@
 import { createContext, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -7,8 +9,9 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(localStorage.getItem("userid") || "");
   const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const navigate = useNavigate();
 
-  useEffect(() => {}, [user, token]);
+  // useEffect(() => {}, [user, token]);
 
   const _login = async ({ email, token }) => {
     try {
@@ -29,6 +32,8 @@ export function AuthProvider({ children }) {
       setToken(token);
       localStorage.setItem("userid", _user.data.user.userId);
       localStorage.setItem("token", token);
+      navigate("/");
+      window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 403) {
         console.log("creds problem");
@@ -46,6 +51,8 @@ export function AuthProvider({ children }) {
     setToken("");
     localStorage.removeItem("userid");
     localStorage.removeItem("token");
+    navigate("/");
+    window.location.reload();
   };
 
   const contextValue = {

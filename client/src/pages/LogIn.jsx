@@ -24,7 +24,6 @@ export function LogIn() {
         alert("Logged in");
         const token = response.data.token;
         _login({ email, token });
-        navigate("/");
       }
     } catch (error) {
       if (error.response && error.response.status === 403) {

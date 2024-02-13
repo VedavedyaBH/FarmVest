@@ -85,7 +85,7 @@ export function Farms() {
         ""
       )}
       <div className="inline-grid	grid-cols-5">
-        {farms.map((farm) => (
+        {farms?.map((farm) => (
           <div className="p-2 ">
             <FarmsDisplay
               title={farm.itemname}

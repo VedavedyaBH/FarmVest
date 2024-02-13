@@ -1,7 +1,7 @@
 const db = require("mongoose");
 
 db.connect(
-    "mongo-url"
+    "mongodb+srv://ved:N6JFj3TKBmRu5eXa@farmvest.jhzxrch.mongodb.net/DevFarmVestV1"
 );
 
 const UsersSchema = new db.Schema({
