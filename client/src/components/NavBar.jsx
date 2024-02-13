@@ -11,10 +11,10 @@ export const NavBar = () => {
     <div>
       {!token ? (
         <>
-          <div className="bg-white border-2 shadow h-16 flex justify-between">
+          <div className="bg-white border shadow h-16 flex justify-between pl-32">
             <div className="flex justify-center text-gray-600 h-full ml-14">
               <button
-                className=" pl-3 text-teal-9 font-bold"
+                className=" pl-3 text-gray-500  "
                 onClick={() => {
                   navigate("/");
                 }}
@@ -22,9 +22,9 @@ export const NavBar = () => {
                 FarmVest
               </button>
             </div>
-            <div className="flex">
+            <div className="flex pr-32">
               <button
-                className="flex flex-col justify-center text-gray-600 h-full mr-12"
+                className="flex flex-col justify-center text-gray-500 font-light h-full mr-12"
                 onClick={() => {
                   navigate("/signup");
                 }}
@@ -35,18 +35,18 @@ export const NavBar = () => {
                 onClick={() => {
                   navigate("/login");
                 }}
-                className="flex flex-col justify-center text-gray-600 h-full mr-12"
+                className="flex flex-col justify-center text-gray-500 font-light h-full mr-12"
               >
                 LogIn
               </button>
-              {/* <button className="flex flex-col justify-center text-gray-600 h-full mr-12">
+              {/* <button className="flex flex-col justify-center text-gray-600 font-light h-full mr-12">
                 Pricing
               </button>
-              <button className="flex flex-col justify-center text-gray-600 h-full mr-12">
+              <button className="flex flex-col justify-center text-gray-600 font-light h-full mr-12">
                 About
               </button> */}
               <button
-                className="flex flex-col justify-center text-gray-600  h-full mr-12"
+                className="flex flex-col justify-center text-gray-500 font-light  h-full mr-12"
                 onClick={() => {
                   navigate("/farms");
                 }}
@@ -58,21 +58,21 @@ export const NavBar = () => {
         </>
       ) : (
         <>
-          <div className="bg-slate-100 border-2 shadow h-16 flex justify-between">
-            <div className="flex justify-center text-gray-600 h-full ml-14">
+          <div className="bg-slate-100 border-2 shadow h-16 flex justify-between pl-32">
+            <div className="flex justify-center text-gray-500 font-light h-full ml-14">
               {/* <img className="h-12 w-12 mt-1" src={img}></img> */}
               <button
                 onClick={() => {
                   navigate("/");
                 }}
-                className="pl-3 text-teal-9 font-bold"
+                className="pl-3 text-gray-500 "
               >
                 FarmVest
               </button>
             </div>
-            <div className="flex">
+            <div className="flex pr-32">
               <button
-                className="flex flex-col justify-center text-gray-600  h-full mr-12"
+                className="flex flex-col justify-center text-gray-500 font-light  h-full mr-12"
                 onClick={() => {
                   navigate("/farms");
                 }}
@@ -80,7 +80,7 @@ export const NavBar = () => {
                 Products
               </button>
               <button
-                className="flex flex-col justify-center text-gray-600 h-full mr-12"
+                className="flex flex-col justify-center text-gray-500 font-light h-full mr-12"
                 onClick={() => {
                   navigate("/wallet");
                 }}
@@ -88,7 +88,7 @@ export const NavBar = () => {
                 Wallet
               </button>
               <button
-                className="flex flex-col justify-center text-gray-600 h-full mr-12"
+                className="flex flex-col justify-center text-gray-500 font-light h-full mr-12"
                 onClick={() => {
                   navigate("/orders");
                 }}
@@ -96,7 +96,7 @@ export const NavBar = () => {
                 Profile
               </button>
               <button
-                className="flex flex-col justify-center text-gray-600 h-full mr-12"
+                className="flex flex-col justify-center text-gray-500 font-light h-full mr-12"
                 onClick={() => {
                   navigate("/addfarms");
                 }}
@@ -104,10 +104,10 @@ export const NavBar = () => {
                 Add Farm
               </button>
               <button
-                className="flex flex-col justify-center text-gray-600  h-full mr-12"
+                className="flex flex-col justify-center text-gray-500 font-light  h-full mr-12"
                 onClick={() => {
                   _logout();
-                  navigate("/");
+                  // navigate("/");
                 }}
               >
                 Logout

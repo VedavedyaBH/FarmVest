@@ -1,10 +1,6 @@
 const db = require("mongoose");
 
-db.connect(
-
-    "mongo-url"
-
-);
+db.connect("mongo-url");
 
 const UsersSchema = new db.Schema({
     userId: String,
